@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kanaka Durga Temple - Tricity Tourism Hub</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Same Header as index.html -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <h1><i class="fas fa-map-marked-alt"></i> Tricity Tourism Hub</h1>
+                    <p class="tagline">Guntur • Vijayawada • Amaravathi</p>
+                </div>
+                <nav class="navbar">
+                    <ul>
+                        <li><a href="index.html#home">Home</a></li>
+                        <li><a href="index.html">Explore</a></li>
+                        <li><a href="virtual-tours.html">Virtual Tours</a></li>
+                        <li><a href="interactive-maps.html">Interactive Maps</a></li>
+                        <li><a href="events.html">Events</a></li>
+                        <li><a href="about.html">About</a></li>
+                    </ul>
+                </nav>
+                <div class="auth-buttons">
+                    <button class="btn-login" onclick="openModal('login')">Login</button>
+                    <button class="btn-signup" onclick="openModal('signup')">Sign Up</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Destination Detail Section -->
+    <section class="destination-detail">
+        <div class="container">
+            <!-- Back Button -->
+            <a href="index.html#temples" class="back-btn">
+                <i class="fas fa-arrow-left"></i> Back to Explore
+            </a>
+
+            <!-- Hero Image -->
+            <div class="detail-hero">
+                <img src="https://images.unsplash.com/photo-1582510003544-4d00b7f74220?w=1200" alt="Kanaka Durga Temple">
+                <div class="detail-badge">Vijayawada</div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="detail-content">
+                <h1>Kanaka Durga Temple</h1>
+                <p class="location"><i class="fas fa-map-marker-alt"></i> Indrakeeladri Hill, Vijayawada, Andhra Pradesh</p>
+                
+                <!-- Quick Info Cards -->
+                <div class="info-cards">
+                    <div class="info-card">
+                        <i class="fas fa-clock"></i>
+                        <h3>Timings</h3>
+                        <p>4:00 AM - 9:00 PM</p>
+                    </div>
+                    <div class="info-card">
+                        <i class="fas fa-ticket-alt"></i>
+                        <h3>Entry Fee</h3>
+                        <p>Free (Special Darshan ₹100)</p>
+                    </div>
+                    <div class="info-card">
+                        <i class="fas fa-calendar-alt"></i>
+                        <h3>Best Time</h3>
+                        <p>Oct - Mar</p>
+                    </div>
+                    <div class="info-card">
+                        <i class="fas fa-car"></i>
+                        <h3>Distance</h3>
+                        <p>2 km from Vijayawada</p>
+                    </div>
+                </div>
+
+                <!-- About Section -->
+                <div class="detail-section">
+                    <h2>About</h2>
+                    <p>The Kanaka Durga Temple is one of the most revered temples in South India, dedicated to Goddess Kanaka Durga. Located atop Indrakeeladri Hill, the temple offers breathtaking panoramic views of the Krishna River and Vijayawada city.</p>
+                    <p>The temple has a rich history dating back centuries and is one of the Shakti Peethas. During Navaratri, the temple witnesses millions of devotees from across the country.</p>
+                </div>
+
+                <!-- Highlights -->
+                <div class="detail-section">
+                    <h2>Highlights</h2>
+                    <ul class="highlights-list">
+                        <li><i class="fas fa-check-circle"></i> Beautiful hilltop location with river views</li>
+                        <li><i class="fas fa-check-circle"></i> Ancient Shakti Peetha temple</li>
+                        <li><i class="fas fa-check-circle"></i> Special Navaratri celebrations</li>
+                        <li><i class="fas fa-check-circle"></i> Rope-way facility available</li>
+                        <li><i class="fas fa-check-circle"></i> Archaeological significance</li>
+                    </ul>
+                </div>
+
+                <!-- How to Reach -->
+                <div class="detail-section">
+                    <h2>How to Reach</h2>
+                    <div class="reach-info">
+                        <div><i class="fas fa-plane"></i> <strong>Airport:</strong> Vijayawada Airport (20 km)</div>
+                        <div><i class="fas fa-train"></i> <strong>Railway:</strong> Vijayawada Junction (3 km)</div>
+                        <div><i class="fas fa-bus"></i> <strong>Bus:</strong> Pandit Nehru Bus Station (2 km)</div>
+                    </div>
+                </div>
+
+                <!-- Booking Form -->
+                <div class="booking-section">
+                    <h2>Book Your Visit</h2>
+                    <form class="booking-form" onsubmit="handleBooking(event)">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="name">Full Name *</label>
+                                <input type="text" id="name" name="name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email *</label>
+                                <input type="email" id="email" name="email" required>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="phone">Phone Number *</label>
+                                <input type="tel" id="phone" name="phone" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="date">Visit Date *</label>
+                                <input type="date" id="date" name="date" required>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="visitors">Number of Visitors *</label>
+                                <input type="number" id="visitors" name="visitors" min="1" max="50" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="darshan">Darshan Type *</label>
+                                <select id="darshan" name="darshan" required>
+                                    <option value="">Select Type</option>
+                                    <option value="general">General Darshan (Free)</option>
+                                    <option value="special">Special Darshan (₹100)</option>
+                                    <option value="vip">VIP Darshan (₹500)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="message">Special Requirements (Optional)</label>
+                            <textarea id="message" name="message" rows="4"></textarea>
+                        </div>
+
+                        <button type="submit" class="btn-submit">
+                            <i class="fas fa-calendar-check"></i> Book Now
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Tricity Tourism Hub</h3>
+                    <p>Discover the best of Guntur, Vijayawada, and Amaravathi</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html#temples">Temples</a></li>
+                        <li><a href="index.html#heritage">Heritage</a></li>
+                        <li><a href="index.html#nature">Nature</a></li>
+                        <li><a href="index.html#beaches">Beaches</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact Us</h4>
+                    <p><i class="fas fa-envelope"></i> info@tricitytourism.com</p>
+                    <p><i class="fas fa-phone"></i> +91 1234567890</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Tricity Tourism Hub. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

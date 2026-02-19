@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tricity Tourism Hub - Guntur, Vijayawada & Amaravathi</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <h1><i class="fas fa-map-marked-alt"></i> Tricity Tourism Hub</h1>
+                    <p class="tagline">Guntur • Vijayawada • Amaravathi</p>
+                </div>
+                <nav class="navbar">
+                    <ul>
+                        <li><a href="index.html#home">Home</a></li>
+                        <li><a href="index.html">Explore</a></li>
+                        <li><a href="virtual-tours.html">Virtual Tours</a></li>
+                        <li><a href="interactive-maps.html">Interactive Maps</a></li>
+                        <li><a href="events.html">Events</a></li>
+                        <li><a href="about.html">About</a></li>
+                    </ul>
+                </nav>
+                <div class="auth-buttons">
+                    <!-- Filled dynamically by updateAuthUI() in script.js -->
+                    <button class="btn-login"  onclick="openModal('login')">Login</button>
+                    <button class="btn-signup" onclick="openModal('signup')">Sign Up</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section with Search -->
+    <section class="hero">
+        <div class="hero-overlay">
+            <div class="container">
+                <h2 class="hero-title">Discover the Beauty of Tricity</h2>
+                <p class="hero-subtitle">Explore temples, heritage sites, nature spots, and pristine beaches</p>
+                
+                <!-- Search Bar -->
+                <div class="search-container">
+                    <input type="text" id="searchInput" placeholder="Search destinations, temples, beaches..." class="search-input">
+                    <button class="search-btn" onclick="performSearch()">
+                        <i class="fas fa-search"></i> Search
+                    </button>
+                </div>
+                <div id="searchResults" class="search-results"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content - Categories -->
+    <main>
+        <!-- Temples Section -->
+        <section id="temples" class="category-section">
+            <div class="container">
+                <div class="section-header">
+                    <i class="fas fa-om category-icon"></i>
+                    <h2>Sacred Temples</h2>
+                    <p>Experience divine spirituality and ancient architecture</p>
+                </div>
+                <div class="cards-grid">
+                    <div class="destination-card" data-name="kanaka durga temple">
+                        <div class="card-image">
+                            <img src="pics/durgatemple.jpg" alt="Kanaka Durga Temple">
+                            <div class="card-badge">Vijayawada</div>
+                        </div>
+                        <div class="card-content">
+                            <h3>Kanaka Durga Temple</h3>
+                            <p class="location"><i class="fas fa-map-marker-alt"></i> Indrakeeladri Hill, Vijayawada</p>
+                            <p class="description">One of the most revered temples dedicated to Goddess Durga, offering panoramic views of the Krishna River.</p>
+                            <button class="btn-explore" onclick="window.location.href='kanaka_durga_temple.html'">Explore More</button>
+                        </div>
+                    </div>
+                    <div class="destination-card" data-name="lakshmi narasimha temple">
+                        <div class="card-image">
+                            <img src="pics/narasimhaswami.jpg" alt="Lakshmi Narasimha Temple">
+                            <div class="card-badge">Amaravathi</div>
+                        </div>
+                        <div class="card-content">
+                            <h3>Lakshmi Narasimha Temple</h3>
+                            <p class="location"><i class="fas fa-map-marker-alt"></i> Amaravathi</p>
+                            <p class="description">Ancient temple showcasing exquisite Dravidian architecture and rich cultural heritage.</p>
+                            <button class="btn-explore" onclick="window.location.href='narasimhatemple.html'">Explore More</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Heritage Section -->
+        <section id="heritage" class="category-section bg-light">
+            <div class="container">
+                <div class="section-header">
+                    <i class="fas fa-landmark category-icon"></i>
+                    <h2>Heritage Sites</h2>
+                    <p>Step back in time and explore historical marvels</p>
+                </div>
+                <div class="cards-grid">
+                    <div class="destination-card" data-name="undavalli caves">
+                        <div class="card-image">
+                            <img src="pics/undavallicaves.jpg" alt="Undavalli Caves">
+                            <div class="card-badge">Vijayawada</div>
+                        </div>
+                        <div class="card-content">
+                            <h3>Undavalli Caves</h3>
+                            <p class="location"><i class="fas fa-map-marker-alt"></i> Undavalli, Guntur</p>
+                            <p class="description">Rock-cut caves dating back to 4th-5th century, featuring intricate sculptures and ancient architecture.</p>
+                           <button class="btn-explore" onclick="window.location.href='undavallicaves.html'">Explore More</button>
+                        </div>
+                    </div>
+                    <div class="destination-card" data-name="kondaveedu fort">
+                        <div class="card-image">
+                            <img src="pics/kondavid-fort.jpg" alt="Kondaveedu Fort">
+                            <div class="card-badge">Guntur</div>
+                        </div>
+                        <div class="card-content">
+                            <h3>Kondaveedu Fort</h3>
+                            <p class="location"><i class="fas fa-map-marker-alt"></i> Kondaveedu, Guntur</p>
+                            <p class="description">Historic hill fortress with stunning views and remnants of medieval Telugu kingdom glory.</p>
+                            <button class="btn-explore" onclick="window.location.href='kondaveedufort.html'">Explore More</button>
+                        </div>
+                    </div>
+                    <div class="destination-card" data-name="kondapalli fort">
+                        <div class="card-image">
+                            <img src="pics/kondapallifort.jpg" alt="Kondapalli Fort">
+                            <div class="card-badge">Vijayawada</div>
+                        </div>
+                        <div class="card-content">
+                            <h3>Kondapalli Fort</h3>
+                            <p class="location"><i class="fas fa-map-marker-alt"></i> Kondapalli, Vijayawada</p>
+                            <p class="description">Ancient fort built in 14th century, famous for traditional toy-making and historical significance.</p>
+                            <button class="btn-explore" onclick="window.location.href='kondapallifort.html'">Explore More</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Nature Spots Section -->
+        <section id="nature" class="category-section">
+            <div class="container">
+                <div class="section-header">
+                    <i class="fas fa-leaf category-icon"></i>
+                    <h2>Nature Spots</h2>
+                    <p>Immerse yourself in natural beauty and wildlife</p>
+                </div>
+                <div class="cards-grid">
+                    <div class="destination-card" data-name="butterfly garden">
+                        <div class="card-image">
+                            <img src="pics/butterfly.jpg" alt="Butterfly Garden">
+                            <div class="card-badge">Vijayawada</div>
+                        </div>
+                        <div class="card-content">
+                            <h3>Butterfly Garden</h3>
+                            <p class="location"><i class="fas fa-map-marker-alt"></i> Vijayawada</p>
+                            <p class="description">Colorful paradise with diverse butterfly species and beautiful flora in a serene environment.</p>
+                            <button class="btn-explore" onclick="window.location.href='butterflygarden.html'">Explore More</button>
+                        </div>
+                    </div>
+                    <div class="destination-card" data-name="uppalapadu bird sanctuary">
+                        <div class="card-image">
+                            <img src="pics/uppalapadu.jpg" alt="Uppalapadu Bird Sanctuary">
+                            <div class="card-badge">Guntur</div>
+                        </div>
+                        <div class="card-content">
+                            <h3>Uppalapadu Bird Sanctuary</h3>
+                            <p class="location"><i class="fas fa-map-marker-alt"></i> Uppalapadu, Guntur</p>
+                            <p class="description">Haven for migratory birds including pelicans, painted storks, and various species of herons.</p>
+                            <button class="btn-explore" onclick="window.location.href='uppalapadu.html'">Explore More</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Beaches Section -->
+        <section id="beaches" class="category-section bg-light">
+            <div class="container">
+                <div class="section-header">
+                    <i class="fas fa-umbrella-beach category-icon"></i>
+                    <h2>Pristine Beaches</h2>
+                    <p>Relax on golden sands and enjoy coastal serenity</p>
+                </div>
+                <div class="cards-grid">
+                    <div class="destination-card" data-name="bapatla suryalanka beach">
+                        <div class="card-image">
+                            <img src="pics/Fishing_boat_near_Suryalanka_beach.jpg" alt="Suryalanka Beach">
+                            <div class="card-badge">Bapatla</div>
+                        </div>
+                        <div class="card-content">
+                            <h3>Bapatla Suryalanka Beach</h3>
+                            <p class="location"><i class="fas fa-map-marker-alt"></i> Suryalanka, Bapatla</p>
+                            <p class="description">Beautiful beach with golden sands, perfect for relaxation and water sports activities.</p>
+                            <button class="btn-explore" onclick="window.location.href='suryalankabeach.html'">Explore More</button>
+                        </div>
+                    </div>
+                    <div class="destination-card" data-name="manginapudi beach">
+                        <div class="card-image">
+                            <img src="pics/Machilipatnam_beach_at_dusk11_09.jpg" alt="Manginapudi Beach">
+                            <div class="card-badge">Guntur</div>
+                        </div>
+                        <div class="card-content">
+                            <h3>Manginapudi Beach</h3>
+                            <p class="location"><i class="fas fa-map-marker-alt"></i> Manginapudi, Guntur</p>
+                            <p class="description">Scenic beach known for its natural beauty, tranquil atmosphere, and stunning sunsets.</p>
+                            <button class="btn-explore" onclick="window.location.href='manginapudibeach.html'">Explore More</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Tricity Tourism Hub</h3>
+                    <p>Discover the best of Guntur, Vijayawada, and Amaravathi</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#temples">Temples</a></li>
+                        <li><a href="#heritage">Heritage</a></li>
+                        <li><a href="#nature">Nature</a></li>
+                        <li><a href="#beaches">Beaches</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact Us</h4>
+                    <p><i class="fas fa-envelope"></i> info@tricitytourism.com</p>
+                    <p><i class="fas fa-phone"></i> +91 1234567890</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Tricity Tourism Hub. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+
+    <!-- ── AUTH MODAL ── -->
+    <div id="authModal" class="modal-overlay">
+        <div class="modal-box">
+            <button class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button>
+            <div class="modal-tabs">
+                <button class="modal-tab active" data-tab="login"  onclick="switchTab('login')">Login</button>
+                <button class="modal-tab"         data-tab="signup" onclick="switchTab('signup')">Sign Up</button>
+            </div>
+            <div id="loginForm" class="modal-form active">
+                <h2><i class="fas fa-sign-in-alt"></i> Welcome Back</h2>
+                <p class="modal-subtitle">Login to save favourites &amp; write reviews</p>
+                <form id="loginFormEl">
+                    <div class="modal-field">
+                        <label for="loginEmail">Email</label>
+                        <input type="email" id="loginEmail" placeholder="you@example.com" required>
+                    </div>
+                    <div class="modal-field">
+                        <label for="loginPassword">Password</label>
+                        <input type="password" id="loginPassword" placeholder="Your password" required>
+                    </div>
+                    <p class="form-error" id="loginError"></p>
+                    <button type="submit" class="btn-modal-submit">Login</button>
+                </form>
+                <p class="modal-switch">Don't have an account? <a href="#" onclick="switchTab('signup')">Sign Up</a></p>
+            </div>
+            <div id="signupForm" class="modal-form">
+                <h2><i class="fas fa-user-plus"></i> Create Account</h2>
+                <p class="modal-subtitle">Join to explore and save your favourite spots</p>
+                <form id="signupFormEl">
+                    <div class="modal-field">
+                        <label for="signupName">Full Name</label>
+                        <input type="text" id="signupName" placeholder="Your name" required>
+                    </div>
+                    <div class="modal-field">
+                        <label for="signupEmail">Email</label>
+                        <input type="email" id="signupEmail" placeholder="you@example.com" required>
+                    </div>
+                    <div class="modal-field">
+                        <label for="signupPassword">Password</label>
+                        <input type="password" id="signupPassword" placeholder="Min. 6 characters" required>
+                    </div>
+                    <p class="form-error" id="signupError"></p>
+                    <button type="submit" class="btn-modal-submit">Create Account</button>
+                </form>
+                <p class="modal-switch">Already have an account? <a href="#" onclick="switchTab('login')">Login</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
