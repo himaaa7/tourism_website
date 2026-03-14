@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - Tricity Tourism Hub</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .page-hero {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.9) 0%, rgba(118, 75, 162, 0.88) 100%),
+                url('https://images.unsplash.com/photo-1548013146-72479768bada?w=1600') center/cover;
+            padding: 5rem 0 3rem;
+            text-align: center;
+            color: white;
+        }
+
+        .page-hero h1 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .page-hero p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .about-section {
+            padding: 5rem 0;
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        @media(max-width:768px) {
+            .about-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .about-img {
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .about-img img {
+            width: 100%;
+            height: 380px;
+            object-fit: cover;
+        }
+
+        .about-text h2 {
+            font-size: 2rem;
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        .about-text p {
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 1.2rem;
+            font-size: 0.97rem;
+        }
+
+        .about-text .highlight {
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        .stats-section {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            padding: 4rem 0;
+            color: white;
+            text-align: center;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+        }
+
+        @media(max-width:600px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .stat-box h3 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.4rem;
+        }
+
+        .stat-box p {
+            opacity: 0.85;
+            font-size: 0.95rem;
+        }
+
+        .team-section {
+            padding: 5rem 0;
+            background: #fafbff;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-header h2 {
+            font-size: 2rem;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .section-header p {
+            color: #666;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .team-card {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem 1.5rem;
+            text-align: center;
+            box-shadow: 0 3px 16px rgba(0, 0, 0, 0.07);
+            transition: transform 0.3s;
+        }
+
+        .team-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .team-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 2rem;
+            color: white;
+        }
+
+        .team-card h4 {
+            font-size: 1rem;
+            color: #333;
+            margin-bottom: 0.3rem;
+        }
+
+        .team-card p {
+            font-size: 0.85rem;
+            color: #667eea;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .team-card .team-desc {
+            color: #777;
+            font-size: 0.82rem;
+        }
+
+        .mission-section {
+            padding: 5rem 0;
+        }
+
+        .mission-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        @media(max-width:768px) {
+            .mission-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .mission-card {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 3px 16px rgba(0, 0, 0, 0.07);
+            text-align: center;
+            border-top: 4px solid #667eea;
+        }
+
+        .mission-card .icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .mission-card h3 {
+            font-size: 1.1rem;
+            color: #333;
+            margin-bottom: 0.8rem;
+        }
+
+        .mission-card p {
+            color: #666;
+            font-size: 0.9rem;
+            line-height: 1.7;
+        }
+
+        .contact-section {
+            padding: 5rem 0;
+            background: #fafbff;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+        }
+
+        @media(max-width: 768px) {
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .contact-info h2 {
+            font-size: 1.8rem;
+            color: #333;
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        .contact-item h4 {
+            font-size: 0.9rem;
+            color: #333;
+            margin-bottom: 0.2rem;
+        }
+
+        .contact-item p {
+            color: #666;
+            font-size: 0.88rem;
+        }
+
+        .contact-form-box {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .contact-form-box h3 {
+            font-size: 1.3rem;
+            color: #333;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: #444;
+            margin-bottom: 0.4rem;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.95rem;
+            transition: border-color 0.3s;
+            outline: none;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #667eea;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        @media(max-width:480px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <h1><i class="fas fa-map-marked-alt"></i> Tricity Tourism Hub</h1>
+                    <p class="tagline">Guntur • Vijayawada • Amaravathi</p>
+                </div>
+                <nav class="navbar">
+                    <ul>
+                        <li><a href="index.html#home">Home</a></li>
+                        <li><a href="virtual-tours.html">Virtual Tours</a></li>
+                        <li><a href="interactive-maps.html">Interactive Maps</a></li>
+                        <li><a href="events.html">Events</a></li>
+                        <li><a href="about.html" class="active">About</a></li>
+                    </ul>
+                </nav>
+                <div class="auth-buttons">
+                    <button class="btn-login" onclick="openModal('login')">Login</button>
+                    <button class="btn-signup" onclick="openModal('signup')">Sign Up</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="page-hero">
+        <div class="container">
+            <h1><i class="fas fa-info-circle" style="margin-right:12px"></i>About Us</h1>
+            <p>We're dedicated to showcasing the incredible cultural, spiritual, and natural heritage of the Tricity
+                region of Andhra Pradesh.</p>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about-section">
+        <div class="container">
+            <div class="about-grid">
+                <div class="about-img">
+                    <img src="https://images.unsplash.com/photo-1548013146-72479768bada?w=800&q=80"
+                        alt="Tricity Tourism">
+                </div>
+                <div class="about-text">
+                    <h2>Celebrating the Heritage of Tricity</h2>
+                    <p>
+                        <span class="highlight">Tricity Tourism Hub</span> was born from a passion to connect travelers
+                        with the extraordinary heritage of Guntur, Vijayawada, and Amaravathi — three cities that
+                        together form one of Andhra Pradesh's most historically rich regions.
+                    </p>
+                    <p>
+                        From the divine hilltop Kanaka Durga Temple overlooking the Krishna River, to the 1,500-year-old
+                        rock-cut caves of Undavalli, and the pristine beaches of Suryalanka — our platform is your
+                        complete guide to experiencing the best of this magnificent region.
+                    </p>
+                    <p>
+                        We offer <strong>destination guides, interactive maps, virtual tours, event listings, and
+                            seamless booking</strong> — all in one place, so you can plan your perfect Tricity journey.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats -->
+    <section class="stats-section">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <h3>9+</h3>
+                    <p>Curated Destinations</p>
+                </div>
+                <div class="stat-box">
+                    <h3>50K+</h3>
+                    <p>Happy Travelers</p>
+                </div>
+                <div class="stat-box">
+                    <h3>10+</h3>
+                    <p>Annual Events</p>
+                </div>
+                <div class="stat-box">
+                    <h3>3</h3>
+                    <p>Historic Cities</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mission -->
+    <section class="mission-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Our Mission</h2>
+                <p>What drives us to bring Tricity to the world</p>
+            </div>
+            <div class="mission-cards">
+                <div class="mission-card">
+                    <div class="icon">🏛️</div>
+                    <h3>Preserve Heritage</h3>
+                    <p>Promoting awareness and appreciation of the ancient temples, forts, and caves that define the
+                        cultural identity of this region.</p>
+                </div>
+                <div class="mission-card">
+                    <div class="icon">🌱</div>
+                    <h3>Sustainable Tourism</h3>
+                    <p>Encouraging responsible travel practices that benefit local communities and preserve natural
+                        habitats for future generations.</p>
+                </div>
+                <div class="mission-card">
+                    <div class="icon">🤝</div>
+                    <h3>Support Locals</h3>
+                    <p>Connecting travelers with local guides, artisans, and businesses to ensure tourism benefits the
+                        people of Tricity directly.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team -->
+    <section class="team-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Meet the Team</h2>
+                <p>Local experts passionate about Tricity's heritage</p>
+            </div>
+            <div class="team-grid">
+                <div class="team-card">
+                    <div class="team-avatar"><i class="fas fa-user-tie"></i></div>
+                    <h4>Ravi Kumar</h4>
+                    <p>Founder & CEO</p>
+                    <p class="team-desc">Born and raised in Vijayawada, Ravi has 15+ years of experience in heritage
+                        tourism.</p>
+                </div>
+                <div class="team-card">
+                    <div class="team-avatar"><i class="fas fa-camera"></i></div>
+                    <h4>Priya Sharma</h4>
+                    <p>Content & Media Lead</p>
+                    <p class="team-desc">Award-winning travel photographer specializing in South Indian heritage and
+                        culture.</p>
+                </div>
+                <div class="team-card">
+                    <div class="team-avatar"><i class="fas fa-map"></i></div>
+                    <h4>Suresh Reddy</h4>
+                    <p>Tour Operations</p>
+                    <p class="team-desc">Expert guide with deep knowledge of Andhra's temples, forts, and natural
+                        ecosystems.</p>
+                </div>
+                <div class="team-card">
+                    <div class="team-avatar"><i class="fas fa-laptop"></i></div>
+                    <h4>Ananya Devi</h4>
+                    <p>Technology Lead</p>
+                    <p class="team-desc">Full-stack developer building digital bridges between tourists and Tricity's
+                        heritage.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact-section">
+        <div class="container">
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <h2>Get in Touch</h2>
+                    <p style="color:#666;margin-bottom:2rem;">Have questions about a destination? Want to partner with
+                        us? We'd love to hear from you!</p>
+                    <div class="contact-item">
+                        <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
+                        <div>
+                            <h4>Office Address</h4>
+                            <p>MG Road, Vijayawada, Andhra Pradesh 520010</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon"><i class="fas fa-phone"></i></div>
+                        <div>
+                            <h4>Phone</h4>
+                            <p>+91 1234567890<br>+91 9876543210 (WhatsApp)</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon"><i class="fas fa-envelope"></i></div>
+                        <div>
+                            <h4>Email</h4>
+                            <p>info@tricitytourism.com<br>bookings@tricitytourism.com</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon"><i class="fas fa-clock"></i></div>
+                        <div>
+                            <h4>Working Hours</h4>
+                            <p>Mon–Sat: 9:00 AM – 6:00 PM<br>Sunday: 10:00 AM – 2:00 PM</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="contact-form-box">
+                    <h3><i class="fas fa-paper-plane" style="color:#667eea;margin-right:8px"></i>Send a Message</h3>
+                    <form id="contactForm" onsubmit="handleContact(event)">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Your Name *</label>
+                                <input type="text" id="cName" placeholder="Full name" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Email *</label>
+                                <input type="email" id="cEmail" placeholder="your@email.com" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Subject</label>
+                            <select id="cSubject">
+                                <option value="">Select topic</option>
+                                <option>Destination Enquiry</option>
+                                <option>Booking Support</option>
+                                <option>Tour Packages</option>
+                                <option>Partnership / Media</option>
+                                <option>Feedback</option>
+                                <option>Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Message *</label>
+                            <textarea id="cMessage" rows="5" placeholder="How can we help you?" required></textarea>
+                        </div>
+                        <button type="submit" class="submit-btn">
+                            <i class="fas fa-paper-plane" style="margin-right:8px"></i>Send Message
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Tricity Tourism Hub</h3>
+                    <p>Discover the best of Guntur, Vijayawada, and Amaravathi</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html#temples">Temples</a></li>
+                        <li><a href="index.html#heritage">Heritage</a></li>
+                        <li><a href="index.html#nature">Nature</a></li>
+                        <li><a href="index.html#beaches">Beaches</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact Us</h4>
+                    <p><i class="fas fa-envelope"></i> info@tricitytourism.com</p>
+                    <p><i class="fas fa-phone"></i> +91 1234567890</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Tricity Tourism Hub. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        async function handleContact(e) {
+            e.preventDefault();
+            const btn = e.target.querySelector('.submit-btn');
+            const orig = btn.innerHTML; btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+            const data = {
+                name: document.getElementById('cName').value,
+                email: document.getElementById('cEmail').value,
+                subject: document.getElementById('cSubject').value,
+                message: document.getElementById('cMessage').value
+            };
+            try {
+                const res = await fetch('http://localhost:5000/api/contact', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+                const result = await res.json();
+                if (result.success) { showToast(result.message, 'success'); e.target.reset(); }
+                else showToast(result.message || 'Failed to send.', 'error');
+            } catch { showToast('Message sent! We will get back to you soon.', 'success'); e.target.reset(); }
+            finally { btn.disabled = false; btn.innerHTML = orig; }
+        }
+    </script>
+</body>
+
+</html>

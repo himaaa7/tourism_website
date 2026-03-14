@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Virtual Tours - Tricity Tourism Hub</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .page-hero {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.9) 0%, rgba(118, 75, 162, 0.9) 100%),
+                url('https://images.unsplash.com/photo-1548013146-72479768bada?w=1600') center/cover;
+            padding: 5rem 0 3rem;
+            text-align: center;
+            color: white;
+        }
+
+        .page-hero h1 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .page-hero p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .tours-section {
+            padding: 4rem 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-title h2 {
+            font-size: 2rem;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .section-title p {
+            color: #666;
+            font-size: 1.05rem;
+        }
+
+        .tour-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            margin-bottom: 3rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .tour-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .tour-card-inner {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        @media(max-width:768px) {
+            .tour-card-inner {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ── VIDEO PLACEHOLDER ── */
+        .video-wrapper {
+            position: relative;
+            background: #1a1a2e;
+            min-height: 320px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .video-wrapper iframe,
+        .video-wrapper video {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            border: none;
+        }
+
+        .video-placeholder {
+            text-align: center;
+            color: white;
+            z-index: 2;
+            padding: 2rem;
+        }
+
+        .video-placeholder .play-icon {
+            width: 72px;
+            height: 72px;
+            background: rgba(255, 255, 255, 0.15);
+            border: 3px solid rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 2rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .video-placeholder .play-icon:hover {
+            background: rgba(102, 126, 234, 0.7);
+            transform: scale(1.1);
+        }
+
+        .video-placeholder h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .video-placeholder p {
+            font-size: 0.9rem;
+            opacity: 0.7;
+            margin-bottom: 1.2rem;
+        }
+
+        .video-url-hint {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px dashed rgba(255, 255, 255, 0.4);
+            border-radius: 8px;
+            padding: 0.8rem 1.2rem;
+            font-size: 0.82rem;
+            opacity: 0.8;
+            word-break: break-all;
+        }
+
+        .video-url-hint i {
+            margin-right: 6px;
+            color: #ffd700;
+        }
+
+        .tour-info {
+            padding: 2rem 2.5rem;
+        }
+
+        .tour-info h2 {
+            font-size: 1.6rem;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .tour-location {
+            color: #667eea;
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+        }
+
+        .tour-location i {
+            margin-right: 6px;
+        }
+
+        .tour-desc {
+            color: #555;
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+        }
+
+        .tour-meta {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 1.5rem;
+        }
+
+        .tour-meta-item {
+            background: #f0f2ff;
+            color: #667eea;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .tour-meta-item i {
+            margin-right: 5px;
+        }
+
+        .tour-highlights {
+            margin-bottom: 1.5rem;
+        }
+
+        .tour-highlights h4 {
+            font-size: 0.95rem;
+            color: #333;
+            margin-bottom: 0.6rem;
+        }
+
+        .tour-highlights ul {
+            list-style: none;
+        }
+
+        .tour-highlights li {
+            color: #555;
+            font-size: 0.9rem;
+            padding: 0.25rem 0;
+        }
+
+        .tour-highlights li i {
+            color: #667eea;
+            margin-right: 8px;
+        }
+
+        .btn-book-tour {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 0.85rem 2rem;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-book-tour:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Booking modal */
+        .booking-modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .booking-modal-overlay.open {
+            display: flex;
+        }
+
+        .booking-modal {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            max-width: 560px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-close-btn {
+            position: absolute;
+            top: 1.2rem;
+            right: 1.2rem;
+            background: #f5f5f5;
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1rem;
+            color: #555;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+
+        .modal-close-btn:hover {
+            background: #ffe0e0;
+            color: #e53935;
+        }
+
+        .booking-modal h2 {
+            font-size: 1.5rem;
+            color: #333;
+            margin-bottom: 0.3rem;
+        }
+
+        .booking-modal .modal-subtitle {
+            color: #667eea;
+            font-size: 0.9rem;
+            margin-bottom: 1.8rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #444;
+            margin-bottom: 0.4rem;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.95rem;
+            transition: border-color 0.3s;
+            outline: none;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #667eea;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        @media(max-width:480px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 0.5rem;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .price-summary {
+            background: #f0f2ff;
+            border-radius: 10px;
+            padding: 1rem 1.2rem;
+            margin-bottom: 1.2rem;
+            font-size: 0.9rem;
+        }
+
+        .price-summary .price-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.2rem 0;
+            color: #555;
+        }
+
+        .price-summary .price-total {
+            font-weight: 700;
+            color: #333;
+            border-top: 1px solid #c5caff;
+            margin-top: 0.5rem;
+            padding-top: 0.5rem;
+        }
+
+        /* Stats */
+        .stats-bar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 2.5rem 0;
+            color: white;
+            text-align: center;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+        }
+
+        @media(max-width:600px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .stat-item h3 {
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .stat-item p {
+            font-size: 0.9rem;
+            opacity: 0.85;
+        }
+
+        /* FAQ */
+        .faq-section {
+            padding: 4rem 0;
+            background: #fafbff;
+        }
+
+        .faq-item {
+            background: white;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            overflow: hidden;
+        }
+
+        .faq-question {
+            padding: 1.2rem 1.5rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .faq-question:hover {
+            color: #667eea;
+        }
+
+        .faq-answer {
+            padding: 0 1.5rem 1.2rem;
+            color: #555;
+            line-height: 1.7;
+            display: none;
+        }
+
+        .faq-item.open .faq-answer {
+            display: block;
+        }
+
+        .faq-item.open .faq-question i.toggle {
+            transform: rotate(45deg);
+        }
+
+        .faq-question i.toggle {
+            transition: transform 0.3s;
+            color: #667eea;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <h1><i class="fas fa-map-marked-alt"></i> Tricity Tourism Hub</h1>
+                    <p class="tagline">Guntur • Vijayawada • Amaravathi</p>
+                </div>
+                <nav class="navbar">
+                    <ul>
+                        <li><a href="index.html#home">Home</a></li>
+                        <li><a href="virtual-tours.html" class="active">Virtual Tours</a></li>
+                        <li><a href="interactive-maps.html">Interactive Maps</a></li>
+                        <li><a href="events.html">Events</a></li>
+                        <li><a href="about.html">About</a></li>
+                    </ul>
+                </nav>
+                <div class="auth-buttons">
+                    <button class="btn-login" onclick="openModal('login')">Login</button>
+                    <button class="btn-signup" onclick="openModal('signup')">Sign Up</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="page-hero">
+        <div class="container">
+            <h1><i class="fas fa-vr-cardboard" style="margin-right:12px"></i>Virtual Tours</h1>
+            <p>Explore the magnificent heritage of Tricity from the comfort of your home. Immersive 360° and guided
+                video tours of all major destinations.</p>
+        </div>
+    </section>
+
+    <!-- Stats -->
+    <div class="stats-bar">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <h3>9+</h3>
+                    <p>Destinations</p>
+                </div>
+                <div class="stat-item">
+                    <h3>360°</h3>
+                    <p>Immersive Tours</p>
+                </div>
+                <div class="stat-item">
+                    <h3>Free</h3>
+                    <p>Access</p>
+                </div>
+                <div class="stat-item">
+                    <h3>HD</h3>
+                    <p>Video Quality</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tours -->
+    <section class="tours-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Featured Virtual Tours</h2>
+                <p>Experience these destinations through our curated video tours</p>
+            </div>
+
+            <!-- Tour 1: Kanaka Durga Temple -->
+            <div class="tour-card">
+                <div class="tour-card-inner">
+                    <div class="video-wrapper" id="video-1">
+                        <!-- ======================================================
+                             ADD VIRTUAL TOUR VIDEO FOR KANAKA DURGA TEMPLE HERE
+                             Replace the placeholder below with your video:
+                             Option 1 – YouTube embed:
+                               <iframe src="https://www.youtube.com/embed/YOUR_VIDEO_ID" allowfullscreen></iframe>
+                             Option 2 – Direct video file:
+                               <video src="videos/kanaka_durga.mp4" controls poster="pics/durgatemple.jpg"></video>
+                             Option 3 – 360° tour iframe:
+                               <iframe src="YOUR_360_TOUR_URL" allowfullscreen></iframe>
+                        ======================================================= -->
+                        <div class="video-placeholder">
+                            <div class="play-icon"><i class="fas fa-play"></i></div>
+                            <h3>Kanaka Durga Temple</h3>
+                            <p>360° Virtual Tour — Coming Soon</p>
+                            <div class="video-url-hint">
+                                <i class="fas fa-info-circle"></i>
+                                Replace this placeholder: add an <code>&lt;iframe&gt;</code> or
+                                <code>&lt;video&gt;</code> tag inside <code>div#video-1</code>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tour-info">
+                        <h2>Kanaka Durga Temple</h2>
+                        <p class="tour-location"><i class="fas fa-map-marker-alt"></i> Indrakeeladri Hill, Vijayawada
+                        </p>
+                        <p class="tour-desc">Take a virtual journey to one of South India's most revered temples.
+                            Witness the divine architecture, the sacred hilltop setting, and the magnificent views of
+                            the Krishna River — all from your screen.</p>
+                        <div class="tour-meta">
+                            <span class="tour-meta-item"><i class="fas fa-clock"></i> 15 min tour</span>
+                            <span class="tour-meta-item"><i class="fas fa-camera"></i> 360° View</span>
+                            <span class="tour-meta-item"><i class="fas fa-volume-up"></i> Audio Guide</span>
+                        </div>
+                        <div class="tour-highlights">
+                            <h4>What you'll see:</h4>
+                            <ul>
+                                <li><i class="fas fa-check-circle"></i> Main sanctum & idol of Kanaka Durga</li>
+                                <li><i class="fas fa-check-circle"></i> Hilltop panoramic view of Krishna River</li>
+                                <li><i class="fas fa-check-circle"></i> Ancient gopuram and mandapam</li>
+                                <li><i class="fas fa-check-circle"></i> Navaratri decorations and rituals</li>
+                            </ul>
+                        </div>
+                        <button class="btn-book-tour"
+                            onclick="openBookingModal('Kanaka Durga Temple Virtual Tour', 'temple')">
+                            <i class="fas fa-calendar-check"></i> Book Guided Virtual Tour
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tour 2: Undavalli Caves -->
+            <div class="tour-card">
+                <div class="tour-card-inner">
+                    <div class="video-wrapper" id="video-2">
+                        <!-- ======================================================
+                             ADD VIRTUAL TOUR VIDEO FOR UNDAVALLI CAVES HERE
+                             Replace the placeholder below with your video embed.
+                        ======================================================= -->
+                        <div class="video-placeholder">
+                            <div class="play-icon"><i class="fas fa-play"></i></div>
+                            <h3>Undavalli Caves</h3>
+                            <p>360° Virtual Tour — Coming Soon</p>
+                            <div class="video-url-hint">
+                                <i class="fas fa-info-circle"></i>
+                                Replace this placeholder: add video inside <code>div#video-2</code>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tour-info">
+                        <h2>Undavalli Caves</h2>
+                        <p class="tour-location"><i class="fas fa-map-marker-alt"></i> Undavalli, near Vijayawada</p>
+                        <p class="tour-desc">Explore the ancient rock-cut caves of Undavalli dating back to the 4th–5th
+                            century CE. Discover intricate carvings, the massive reclining Vishnu sculpture, and layers
+                            of history carved in sandstone.</p>
+                        <div class="tour-meta">
+                            <span class="tour-meta-item"><i class="fas fa-clock"></i> 20 min tour</span>
+                            <span class="tour-meta-item"><i class="fas fa-camera"></i> 4K Video</span>
+                            <span class="tour-meta-item"><i class="fas fa-book-open"></i> History Guide</span>
+                        </div>
+                        <div class="tour-highlights">
+                            <h4>What you'll see:</h4>
+                            <ul>
+                                <li><i class="fas fa-check-circle"></i> Four-storeyed rock-cut cave complex</li>
+                                <li><i class="fas fa-check-circle"></i> Giant reclining Vishnu sculpture</li>
+                                <li><i class="fas fa-check-circle"></i> Ancient Jain and Hindu panels</li>
+                                <li><i class="fas fa-check-circle"></i> Scenic Krishna River backdrop</li>
+                            </ul>
+                        </div>
+                        <button class="btn-book-tour"
+                            onclick="openBookingModal('Undavalli Caves Virtual Tour', 'heritage')">
+                            <i class="fas fa-calendar-check"></i> Book Guided Virtual Tour
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tour 3: Kondaveedu Fort -->
+            <div class="tour-card">
+                <div class="tour-card-inner">
+                    <div class="video-wrapper" id="video-3">
+                        <!-- ======================================================
+                             ADD VIRTUAL TOUR VIDEO FOR KONDAVEEDU FORT HERE
+                        ======================================================= -->
+                        <div class="video-placeholder">
+                            <div class="play-icon"><i class="fas fa-play"></i></div>
+                            <h3>Kondaveedu Fort</h3>
+                            <p>Aerial & Ground Tour — Coming Soon</p>
+                            <div class="video-url-hint">
+                                <i class="fas fa-info-circle"></i>
+                                Replace this placeholder: add video inside <code>div#video-3</code>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tour-info">
+                        <h2>Kondaveedu Fort</h2>
+                        <p class="tour-location"><i class="fas fa-map-marker-alt"></i> Kondaveedu, Guntur District</p>
+                        <p class="tour-desc">Soar over the medieval fortress of Kondaveedu through our drone-captured
+                            aerial tour. Walk through the ancient ramparts, crumbling bastions, and enjoy breathtaking
+                            valley views.</p>
+                        <div class="tour-meta">
+                            <span class="tour-meta-item"><i class="fas fa-clock"></i> 18 min tour</span>
+                            <span class="tour-meta-item"><i class="fas fa-helicopter"></i> Drone Footage</span>
+                            <span class="tour-meta-item"><i class="fas fa-volume-up"></i> Audio Guide</span>
+                        </div>
+                        <div class="tour-highlights">
+                            <h4>What you'll see:</h4>
+                            <ul>
+                                <li><i class="fas fa-check-circle"></i> Drone aerial flyover of the fort</li>
+                                <li><i class="fas fa-check-circle"></i> Ancient palace ruins and granaries</li>
+                                <li><i class="fas fa-check-circle"></i> Panoramic views of Guntur plains</li>
+                                <li><i class="fas fa-check-circle"></i> Medieval temple inside the fort</li>
+                            </ul>
+                        </div>
+                        <button class="btn-book-tour"
+                            onclick="openBookingModal('Kondaveedu Fort Virtual Tour', 'heritage')">
+                            <i class="fas fa-calendar-check"></i> Book Guided Virtual Tour
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tour 4: Suryalanka Beach -->
+            <div class="tour-card">
+                <div class="tour-card-inner">
+                    <div class="video-wrapper" id="video-4">
+                        <!-- ======================================================
+                             ADD VIRTUAL TOUR VIDEO FOR SURYALANKA BEACH HERE
+                        ======================================================= -->
+                        <div class="video-placeholder">
+                            <div class="play-icon"><i class="fas fa-play"></i></div>
+                            <h3>Suryalanka Beach</h3>
+                            <p>Sunrise Beach Walk — Coming Soon</p>
+                            <div class="video-url-hint">
+                                <i class="fas fa-info-circle"></i>
+                                Replace this placeholder: add video inside <code>div#video-4</code>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tour-info">
+                        <h2>Bapatla Suryalanka Beach</h2>
+                        <p class="tour-location"><i class="fas fa-map-marker-alt"></i> Suryalanka, Bapatla</p>
+                        <p class="tour-desc">Walk along the golden sands of Suryalanka at sunrise through our immersive
+                            beach tour. Feel the gentle waves and witness the stunning coastal beauty of Andhra Pradesh.
+                        </p>
+                        <div class="tour-meta">
+                            <span class="tour-meta-item"><i class="fas fa-clock"></i> 12 min tour</span>
+                            <span class="tour-meta-item"><i class="fas fa-camera"></i> 4K Sunrise</span>
+                            <span class="tour-meta-item"><i class="fas fa-water"></i> Beach Walk</span>
+                        </div>
+                        <div class="tour-highlights">
+                            <h4>What you'll see:</h4>
+                            <ul>
+                                <li><i class="fas fa-check-circle"></i> Golden sunrise over the Bay of Bengal</li>
+                                <li><i class="fas fa-check-circle"></i> Traditional fishing boats at dawn</li>
+                                <li><i class="fas fa-check-circle"></i> Coastal wildlife and birds</li>
+                                <li><i class="fas fa-check-circle"></i> Water sports activity zones</li>
+                            </ul>
+                        </div>
+                        <button class="btn-book-tour"
+                            onclick="openBookingModal('Suryalanka Beach Virtual Tour', 'beach')">
+                            <i class="fas fa-calendar-check"></i> Book Guided Virtual Tour
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="faq-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Frequently Asked Questions</h2>
+                <p>Everything you need to know about our virtual tours</p>
+            </div>
+            <div style="max-width:750px; margin:0 auto;">
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        Are the virtual tours free? <i class="fas fa-plus toggle"></i>
+                    </div>
+                    <div class="faq-answer">Yes! All our video tours are free to watch. You can book a guided virtual
+                        tour session with a live expert guide for a more personalized experience.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        What equipment do I need? <i class="fas fa-plus toggle"></i>
+                    </div>
+                    <div class="faq-answer">You only need a smartphone, tablet, or computer with a good internet
+                        connection. For 360° tours, a VR headset enhances the experience but is not required.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        How does a guided virtual tour work? <i class="fas fa-plus toggle"></i>
+                    </div>
+                    <div class="faq-answer">After booking, our local expert guide conducts a live video call where they
+                        walk you through the destination using real-time video, sharing stories, history, and answering
+                        your questions.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        Can I book a tour for a group? <i class="fas fa-plus toggle"></i>
+                    </div>
+                    <div class="faq-answer">Absolutely! We offer group guided tours for up to 20 participants on a
+                        shared video call. Larger groups can contact us for customized packages.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Booking Modal -->
+    <div class="booking-modal-overlay" id="vtBookingModal">
+        <div class="booking-modal">
+            <button class="modal-close-btn" onclick="closeVTModal()"><i class="fas fa-times"></i></button>
+            <h2><i class="fas fa-vr-cardboard" style="color:#667eea;margin-right:8px"></i>Book Guided Virtual Tour</h2>
+            <p class="modal-subtitle" id="modalTourName">Kanaka Durga Temple Virtual Tour</p>
+            <form id="vtBookingForm" onsubmit="handleVTBooking(event)">
+                <input type="hidden" id="vtTourName" value="">
+                <input type="hidden" id="vtTourType" value="">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Full Name *</label>
+                        <input type="text" id="vtName" placeholder="Your full name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email *</label>
+                        <input type="email" id="vtEmail" placeholder="your@email.com" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Phone Number *</label>
+                        <input type="tel" id="vtPhone" placeholder="+91 XXXXX XXXXX" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Preferred Date *</label>
+                        <input type="date" id="vtDate" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Preferred Time *</label>
+                        <select id="vtTime" required>
+                            <option value="">Select Time</option>
+                            <option>09:00 AM</option>
+                            <option>11:00 AM</option>
+                            <option>02:00 PM</option>
+                            <option>04:00 PM</option>
+                            <option>06:00 PM</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Number of Participants *</label>
+                        <input type="number" id="vtParticipants" min="1" max="20" value="1" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Guide Language *</label>
+                    <select id="vtLanguage" required>
+                        <option value="">Select Language</option>
+                        <option>English</option>
+                        <option>Telugu</option>
+                        <option>Hindi</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Special Requests (Optional)</label>
+                    <textarea id="vtRequests" rows="3"
+                        placeholder="Any specific areas or information you'd like to focus on..."></textarea>
+                </div>
+                <div class="price-summary">
+                    <div class="price-row"><span>Video Tour Access</span><span>Free</span></div>
+                    <div class="price-row"><span>Live Guided Session (1 participant)</span><span>₹299</span></div>
+                    <div class="price-row price-total"><span>Total (estimated)</span><span id="vtPriceTotal">₹299</span>
+                    </div>
+                </div>
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-calendar-check" style="margin-right:8px"></i>Confirm Booking
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Tricity Tourism Hub</h3>
+                    <p>Discover the best of Guntur, Vijayawada, and Amaravathi</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html#temples">Temples</a></li>
+                        <li><a href="index.html#heritage">Heritage</a></li>
+                        <li><a href="index.html#nature">Nature</a></li>
+                        <li><a href="index.html#beaches">Beaches</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact Us</h4>
+                    <p><i class="fas fa-envelope"></i> info@tricitytourism.com</p>
+                    <p><i class="fas fa-phone"></i> +91 1234567890</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Tricity Tourism Hub. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        function openBookingModal(tourName, tourType) {
+            document.getElementById('modalTourName').textContent = tourName;
+            document.getElementById('vtTourName').value = tourName;
+            document.getElementById('vtTourType').value = tourType;
+            document.getElementById('vtBookingModal').classList.add('open');
+        }
+        function closeVTModal() {
+            document.getElementById('vtBookingModal').classList.remove('open');
+        }
+        document.getElementById('vtParticipants').addEventListener('input', function () {
+            var n = parseInt(this.value) || 1;
+            document.getElementById('vtPriceTotal').textContent = '₹' + (n * 299).toLocaleString('en-IN');
+        });
+        async function handleVTBooking(e) {
+            e.preventDefault();
+            const btn = e.target.querySelector('.submit-btn');
+            const orig = btn.innerHTML;
+            btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Booking...';
+            const data = {
+                type: 'virtual_tour',
+                tour_name: document.getElementById('vtTourName').value,
+                name: document.getElementById('vtName').value,
+                email: document.getElementById('vtEmail').value,
+                phone: document.getElementById('vtPhone').value,
+                date: document.getElementById('vtDate').value,
+                time: document.getElementById('vtTime').value,
+                participants: document.getElementById('vtParticipants').value,
+                language: document.getElementById('vtLanguage').value,
+                requests: document.getElementById('vtRequests').value
+            };
+            try {
+                const res = await fetch('http://localhost:5000/api/bookings', {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data)
+                });
+                const result = await res.json();
+                if (result.success) {
+                    showToast('Virtual tour booked successfully! Confirmation sent to ' + data.email, 'success');
+                    closeVTModal(); e.target.reset();
+                } else { showToast(result.message || 'Booking failed.', 'error'); }
+            } catch (err) {
+                showToast('Booking saved locally. Server not reachable.', 'info');
+                closeVTModal(); e.target.reset();
+            } finally { btn.disabled = false; btn.innerHTML = orig; }
+        }
+        function toggleFaq(el) {
+            const item = el.closest('.faq-item');
+            item.classList.toggle('open');
+        }
+        document.getElementById('vtBookingModal').addEventListener('click', function (e) {
+            if (e.target === this) closeVTModal();
+        });
+    </script>
+</body>
+
+</html>

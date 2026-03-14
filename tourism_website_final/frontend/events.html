@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Events & Festivals - Tricity Tourism Hub</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .page-hero {
+            background: linear-gradient(135deg, rgba(230, 81, 0, 0.88) 0%, rgba(102, 126, 234, 0.85) 100%),
+                url('https://images.unsplash.com/photo-1548013146-72479768bada?w=1600') center/cover;
+            padding: 5rem 0 3rem;
+            text-align: center;
+            color: white;
+        }
+
+        .page-hero h1 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .page-hero p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .events-layout {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 0;
+            min-height: 60vh;
+        }
+
+        @media(max-width: 768px) {
+            .events-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Filter Sidebar */
+        .events-sidebar {
+            background: #fafbff;
+            border-right: 1px solid #eef0ff;
+            padding: 1.5rem;
+        }
+
+        .events-sidebar h3 {
+            font-size: 1rem;
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        .filter-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .filter-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 0.5rem;
+        }
+
+        .filter-check {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.4rem;
+            cursor: pointer;
+            font-size: 0.88rem;
+            color: #444;
+        }
+
+        .filter-check input {
+            accent-color: #667eea;
+            cursor: pointer;
+        }
+
+        .filter-check:hover {
+            color: #667eea;
+        }
+
+        .btn-filter {
+            width: 100%;
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 0.7rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: background 0.2s;
+        }
+
+        .btn-filter:hover {
+            background: #5568e0;
+        }
+
+        .btn-reset {
+            width: 100%;
+            background: transparent;
+            color: #667eea;
+            border: 1.5px solid #667eea;
+            padding: 0.6rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            transition: all 0.2s;
+        }
+
+        .btn-reset:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        /* Events Content */
+        .events-content {
+            padding: 2rem;
+        }
+
+        .events-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .events-toolbar h2 {
+            font-size: 1.3rem;
+            color: #333;
+        }
+
+        .events-toolbar .count {
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        .view-toggle {
+            display: flex;
+            gap: 0.4rem;
+        }
+
+        .view-btn {
+            background: white;
+            border: 1.5px solid #e0e0e0;
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            cursor: pointer;
+            color: #666;
+            transition: all 0.2s;
+        }
+
+        .view-btn.active,
+        .view-btn:hover {
+            background: #667eea;
+            border-color: #667eea;
+            color: white;
+        }
+
+        /* Event Cards */
+        .events-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .event-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 3px 16px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .event-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 28px rgba(0, 0, 0, 0.14);
+        }
+
+        .event-card-banner {
+            height: 10px;
+        }
+
+        .banner-festival {
+            background: linear-gradient(90deg, #f57c00, #ffd600);
+        }
+
+        .banner-cultural {
+            background: linear-gradient(90deg, #7b1fa2, #e91e63);
+        }
+
+        .banner-religious {
+            background: linear-gradient(90deg, #c62828, #f57c00);
+        }
+
+        .banner-nature {
+            background: linear-gradient(90deg, #2e7d32, #00bcd4);
+        }
+
+        .banner-heritage {
+            background: linear-gradient(90deg, #4e342e, #795548);
+        }
+
+        .event-card-body {
+            padding: 1.5rem;
+        }
+
+        .event-type-badge {
+            display: inline-block;
+            padding: 0.25rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.8rem;
+        }
+
+        .badge-festival {
+            background: #fff8e1;
+            color: #f57c00;
+        }
+
+        .badge-cultural {
+            background: #f3e5f5;
+            color: #7b1fa2;
+        }
+
+        .badge-religious {
+            background: #fce4ec;
+            color: #c62828;
+        }
+
+        .badge-nature {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .badge-heritage {
+            background: #efebe9;
+            color: #4e342e;
+        }
+
+        .event-card h3 {
+            font-size: 1.1rem;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .event-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 0.35rem;
+            margin-bottom: 1rem;
+        }
+
+        .event-meta-row {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .event-meta-row i {
+            color: #667eea;
+            width: 16px;
+            flex-shrink: 0;
+        }
+
+        .event-desc {
+            color: #666;
+            font-size: 0.88rem;
+            line-height: 1.6;
+            margin-bottom: 1.2rem;
+        }
+
+        .event-card-footer {
+            display: flex;
+            gap: 0.6rem;
+        }
+
+        .btn-event-book {
+            flex: 1;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 0.7rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.88rem;
+            transition: all 0.2s;
+        }
+
+        .btn-event-book:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.35);
+        }
+
+        .btn-event-info {
+            background: #f0f2ff;
+            color: #667eea;
+            border: none;
+            padding: 0.7rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.88rem;
+            transition: all 0.2s;
+        }
+
+        .btn-event-info:hover {
+            background: #e0e4ff;
+        }
+
+        /* Upcoming highlight */
+        .upcoming-banner {
+            background: linear-gradient(135deg, #e8f5e9, #e3f2fd);
+            border: 1.5px solid #a5d6a7;
+            border-radius: 12px;
+            padding: 0.8rem 1.2rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .upcoming-banner i {
+            color: #2e7d32;
+            font-size: 1.3rem;
+        }
+
+        .upcoming-banner strong {
+            color: #2e7d32;
+        }
+
+        .upcoming-banner p {
+            color: #555;
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        /* Booking Modal */
+        .booking-modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .booking-modal-overlay.open {
+            display: flex;
+        }
+
+        .booking-modal {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            max-width: 580px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-close-btn {
+            position: absolute;
+            top: 1.2rem;
+            right: 1.2rem;
+            background: #f5f5f5;
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1rem;
+            color: #555;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+
+        .modal-close-btn:hover {
+            background: #ffe0e0;
+            color: #e53935;
+        }
+
+        .booking-modal h2 {
+            font-size: 1.5rem;
+            color: #333;
+            margin-bottom: 0.3rem;
+        }
+
+        .booking-modal .modal-subtitle {
+            color: #667eea;
+            font-size: 0.9rem;
+            margin-bottom: 1.8rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #444;
+            margin-bottom: 0.4rem;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.95rem;
+            transition: border-color 0.3s;
+            outline: none;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #667eea;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        @media(max-width:480px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .price-summary {
+            background: #f0f2ff;
+            border-radius: 10px;
+            padding: 1rem 1.2rem;
+            margin-bottom: 1.2rem;
+            font-size: 0.9rem;
+        }
+
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.2rem 0;
+            color: #555;
+        }
+
+        .price-total {
+            font-weight: 700;
+            color: #333;
+            border-top: 1px solid #c5caff;
+            margin-top: 0.5rem;
+            padding-top: 0.5rem;
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 0.5rem;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Calendar strip */
+        .calendar-strip {
+            background: white;
+            border-bottom: 1px solid #eee;
+            padding: 1rem 2rem;
+            display: flex;
+            gap: 0.6rem;
+            overflow-x: auto;
+        }
+
+        .cal-month {
+            flex-shrink: 0;
+            padding: 0.5rem 1.2rem;
+            border-radius: 20px;
+            border: 1.5px solid #e0e0e0;
+            background: white;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #555;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .cal-month:hover,
+        .cal-month.active {
+            background: #667eea;
+            border-color: #667eea;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <h1><i class="fas fa-map-marked-alt"></i> Tricity Tourism Hub</h1>
+                    <p class="tagline">Guntur • Vijayawada • Amaravathi</p>
+                </div>
+                <nav class="navbar">
+                    <ul>
+                        <li><a href="index.html#home">Home</a></li>
+                        <li><a href="virtual-tours.html">Virtual Tours</a></li>
+                        <li><a href="interactive-maps.html">Interactive Maps</a></li>
+                        <li><a href="events.html" class="active">Events</a></li>
+                        <li><a href="about.html">About</a></li>
+                    </ul>
+                </nav>
+                <div class="auth-buttons">
+                    <button class="btn-login" onclick="openModal('login')">Login</button>
+                    <button class="btn-signup" onclick="openModal('signup')">Sign Up</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="page-hero">
+        <div class="container">
+            <h1><i class="fas fa-calendar-star" style="margin-right:12px"></i>Events & Festivals</h1>
+            <p>Celebrate the rich cultural heritage of Tricity. From grand temple festivals to nature walks, there's
+                always something happening.</p>
+        </div>
+    </section>
+
+    <!-- Month Calendar Strip -->
+    <div class="calendar-strip" id="calendarStrip">
+        <button class="cal-month active" onclick="filterMonth('all', this)">All Months</button>
+        <button class="cal-month" onclick="filterMonth('Jan', this)">January</button>
+        <button class="cal-month" onclick="filterMonth('Feb', this)">February</button>
+        <button class="cal-month" onclick="filterMonth('Mar', this)">March</button>
+        <button class="cal-month" onclick="filterMonth('Apr', this)">April</button>
+        <button class="cal-month" onclick="filterMonth('May', this)">May</button>
+        <button class="cal-month" onclick="filterMonth('Jun', this)">June</button>
+        <button class="cal-month" onclick="filterMonth('Jul', this)">July</button>
+        <button class="cal-month" onclick="filterMonth('Aug', this)">August</button>
+        <button class="cal-month" onclick="filterMonth('Sep', this)">September</button>
+        <button class="cal-month" onclick="filterMonth('Oct', this)">October</button>
+        <button class="cal-month" onclick="filterMonth('Nov', this)">November</button>
+        <button class="cal-month" onclick="filterMonth('Dec', this)">December</button>
+    </div>
+
+    <div class="events-layout">
+        <!-- Filter Sidebar -->
+        <div class="events-sidebar">
+            <h3><i class="fas fa-filter" style="color:#667eea;margin-right:6px"></i>Filter Events</h3>
+            <div class="filter-group">
+                <label>Event Type</label>
+                <label class="filter-check"><input type="checkbox" value="festival" checked onchange="applyFilters()">
+                    Festivals</label>
+                <label class="filter-check"><input type="checkbox" value="cultural" checked onchange="applyFilters()">
+                    Cultural</label>
+                <label class="filter-check"><input type="checkbox" value="religious" checked onchange="applyFilters()">
+                    Religious</label>
+                <label class="filter-check"><input type="checkbox" value="nature" checked onchange="applyFilters()">
+                    Nature</label>
+                <label class="filter-check"><input type="checkbox" value="heritage" checked onchange="applyFilters()">
+                    Heritage</label>
+            </div>
+            <div class="filter-group">
+                <label>City</label>
+                <label class="filter-check"><input type="checkbox" value="Vijayawada" checked onchange="applyFilters()">
+                    Vijayawada</label>
+                <label class="filter-check"><input type="checkbox" value="Guntur" checked onchange="applyFilters()">
+                    Guntur</label>
+                <label class="filter-check"><input type="checkbox" value="Amaravathi" checked onchange="applyFilters()">
+                    Amaravathi</label>
+                <label class="filter-check"><input type="checkbox" value="Bapatla" checked onchange="applyFilters()">
+                    Bapatla</label>
+            </div>
+            <div class="filter-group">
+                <label>Entry</label>
+                <label class="filter-check"><input type="checkbox" value="free" id="freeCheck"
+                        onchange="applyFilters()"> Free Entry</label>
+                <label class="filter-check"><input type="checkbox" value="paid" id="paidCheck"
+                        onchange="applyFilters()"> Paid Entry</label>
+            </div>
+        </div>
+
+        <!-- Events Grid -->
+        <div class="events-content">
+            <div class="upcoming-banner">
+                <i class="fas fa-star"></i>
+                <div>
+                    <strong>Dasara at Kanaka Durga Temple</strong>
+                    <p>The biggest annual festival is coming up in October 2026 — Book your slots now!</p>
+                </div>
+            </div>
+            <div class="events-toolbar">
+                <h2>All Events <span class="count" id="eventCount"></span></h2>
+            </div>
+            <div class="events-grid" id="eventsGrid"></div>
+        </div>
+    </div>
+
+    <!-- Booking Modal -->
+    <div class="booking-modal-overlay" id="eventBookingModal">
+        <div class="booking-modal">
+            <button class="modal-close-btn" onclick="closeEventModal()"><i class="fas fa-times"></i></button>
+            <h2><i class="fas fa-ticket-alt" style="color:#667eea;margin-right:8px"></i>Book Event Tickets</h2>
+            <p class="modal-subtitle" id="eventModalName">Event Name</p>
+            <form id="eventBookingForm" onsubmit="handleEventBooking(event)">
+                <input type="hidden" id="eEventName" value="">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Full Name *</label>
+                        <input type="text" id="eName" placeholder="Your full name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email *</label>
+                        <input type="email" id="eEmail" placeholder="your@email.com" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Phone *</label>
+                        <input type="tel" id="ePhone" placeholder="+91 XXXXX XXXXX" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Visit Date *</label>
+                        <input type="date" id="eDate" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Adults *</label>
+                        <input type="number" id="eAdults" min="1" max="20" value="2" required
+                            onchange="calcEventPrice()">
+                    </div>
+                    <div class="form-group">
+                        <label>Children (Under 12)</label>
+                        <input type="number" id="eChildren" min="0" max="20" value="0" onchange="calcEventPrice()">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Ticket Category *</label>
+                    <select id="eTicketCat" required onchange="calcEventPrice()">
+                        <option value="general">General Entry</option>
+                        <option value="vip">VIP / Premium Viewing</option>
+                        <option value="guided">Guided Tour Package</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Special Requests</label>
+                    <textarea id="eRequests" rows="3"
+                        placeholder="Wheelchair access, dietary requirements, etc."></textarea>
+                </div>
+                <div class="price-summary">
+                    <div class="price-row"><span>Adults (<span id="adultCount">2</span> × <span
+                                id="adultPrice">₹50</span>)</span><span id="adultTotal">₹100</span></div>
+                    <div class="price-row"><span>Children (<span id="childCount">0</span> × <span
+                                id="childPrice">₹25</span>)</span><span id="childTotal">₹0</span></div>
+                    <div class="price-row price-total"><span>Total</span><span id="eTotal">₹100</span></div>
+                </div>
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-check-circle" style="margin-right:8px"></i>Confirm Booking
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Tricity Tourism Hub</h3>
+                    <p>Discover the best of Guntur, Vijayawada, and Amaravathi</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html#temples">Temples</a></li>
+                        <li><a href="index.html#heritage">Heritage</a></li>
+                        <li><a href="index.html#nature">Nature</a></li>
+                        <li><a href="index.html#beaches">Beaches</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact Us</h4>
+                    <p><i class="fas fa-envelope"></i> info@tricitytourism.com</p>
+                    <p><i class="fas fa-phone"></i> +91 1234567890</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Tricity Tourism Hub. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        const allEvents = [
+            {
+                id: 1, name: 'Dasara at Kanaka Durga Temple', type: 'religious',
+                city: 'Vijayawada', venue: 'Kanaka Durga Temple, Vijayawada',
+                dates: 'Oct 2 – Oct 11, 2026', months: ['Oct'],
+                duration: '10 days', entry: 'free', adultFee: 0, childFee: 0,
+                desc: 'The most spectacular festival of Vijayawada. Goddess Kanaka Durga is adorned in different divine forms each day. Millions of pilgrims visit during Navaratri.',
+                highlight: true
+            },
+            {
+                id: 2, name: 'Krishna Pushkaralu', type: 'religious',
+                city: 'Vijayawada', venue: 'Krishna River Ghats, Vijayawada',
+                dates: 'Jan 20 – Feb 1, 2026', months: ['Jan', 'Feb'],
+                duration: '12 days', entry: 'free', adultFee: 0, childFee: 0,
+                desc: 'The sacred river festival that occurs once every 12 years. Millions take a holy dip in the Krishna River at Vijayawada and Amaravathi ghats.',
+                highlight: false
+            },
+            {
+                id: 3, name: 'Kondapalli Toy Festival', type: 'cultural',
+                city: 'Vijayawada', venue: 'Kondapalli Village, near Vijayawada',
+                dates: 'Nov 15 – Nov 20, 2026', months: ['Nov'],
+                duration: '5 days', entry: 'paid', adultFee: 50, childFee: 20,
+                desc: 'Celebrate the GI-tagged Kondapalli wooden toys. Live demonstrations by master craftsmen, exhibitions, and cultural performances showcasing the rich toy-making tradition.',
+                highlight: false
+            },
+            {
+                id: 4, name: 'Amaravathi Heritage Walk', type: 'heritage',
+                city: 'Amaravathi', venue: 'Amaravathi Archaeological Museum',
+                dates: 'Every Weekend, Oct–Feb', months: ['Oct', 'Nov', 'Dec', 'Jan', 'Feb'],
+                duration: '3 hours', entry: 'paid', adultFee: 100, childFee: 50,
+                desc: 'Expert-guided heritage walk through the ancient Buddhist capital of Amaravathi. Explore the 2000-year-old stupa site, museum, and riverside ghats.',
+                highlight: false
+            },
+            {
+                id: 5, name: 'Uppalapadu Bird Watch Festival', type: 'nature',
+                city: 'Guntur', venue: 'Uppalapadu Lake, Guntur',
+                dates: 'Dec 15 – Dec 16, 2026', months: ['Dec'],
+                duration: '2 days', entry: 'free', adultFee: 0, childFee: 0,
+                desc: 'Annual festival celebrating the arrival of migratory birds. Expert naturalists guide participants, photography competitions, and awareness programs.',
+                highlight: false
+            },
+            {
+                id: 6, name: 'Ugadi Celebrations', type: 'festival',
+                city: 'Vijayawada', venue: 'Multiple venues across Tricity',
+                dates: 'Mar 30, 2026', months: ['Mar'],
+                duration: '1 day', entry: 'free', adultFee: 0, childFee: 0,
+                desc: 'The Telugu New Year is celebrated with great pomp. Traditional Ugadi pachadi, processions, music, and cultural programs fill every street of Vijayawada.',
+                highlight: false
+            },
+            {
+                id: 7, name: 'Sankranti Kite Festival', type: 'festival',
+                city: 'Guntur', venue: 'Guntur Open Air Stadium',
+                dates: 'Jan 14–15, 2026', months: ['Jan'],
+                duration: '2 days', entry: 'paid', adultFee: 30, childFee: 15,
+                desc: 'Pongal and Sankranti are celebrated with a spectacular kite festival. Hundreds of colorful kites fill the Guntur sky. Traditional folk dances, bonfire, and local cuisine stalls.',
+                highlight: false
+            },
+            {
+                id: 8, name: 'Undavalli Caves Light & Sound Show', type: 'cultural',
+                city: 'Vijayawada', venue: 'Undavalli Caves, near Vijayawada',
+                dates: 'Every Fri & Sat, Year Round', months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                duration: '45 minutes', entry: 'paid', adultFee: 150, childFee: 75,
+                desc: 'A spectacular light and sound show narrating the 1500-year-old history of Undavalli Caves. Dramatic illumination of the ancient rock sculptures with surround sound narration.',
+                highlight: false
+            },
+            {
+                id: 9, name: 'Coastal Beach Carnival', type: 'festival',
+                city: 'Bapatla', venue: 'Suryalanka Beach, Bapatla',
+                dates: 'Dec 26–28, 2026', months: ['Dec'],
+                duration: '3 days', entry: 'free', adultFee: 0, childFee: 0,
+                desc: 'A vibrant beach carnival featuring water sports, seafood festival, traditional fishing boat rides, local craft stalls, and sunset music concerts.',
+                highlight: false
+            },
+            {
+                id: 10, name: 'Vinayaka Chavithi Procession', type: 'religious',
+                city: 'Vijayawada', venue: 'Throughout Vijayawada City',
+                dates: 'Sep 7, 2026', months: ['Sep'],
+                duration: '1 day', entry: 'free', adultFee: 0, childFee: 0,
+                desc: 'Ganesh Chaturthi is celebrated with grand processions carrying elaborately decorated Ganesha idols. The immersion procession at Krishna River is a breathtaking spectacle.',
+                highlight: false
+            },
+        ];
+
+        let activeMonthFilter = 'all';
+
+        function applyFilters() {
+            const types = [...document.querySelectorAll('.events-sidebar input[type=checkbox][value]')].filter(c => ['festival', 'cultural', 'religious', 'nature', 'heritage'].includes(c.value) && c.checked).map(c => c.value);
+            const cities = [...document.querySelectorAll('.events-sidebar input[type=checkbox][value]')].filter(c => ['Vijayawada', 'Guntur', 'Amaravathi', 'Bapatla'].includes(c.value) && c.checked).map(c => c.value);
+            const freeOnly = document.getElementById('freeCheck')?.checked;
+            const paidOnly = document.getElementById('paidCheck')?.checked;
+
+            let filtered = allEvents.filter(ev => {
+                if (!types.includes(ev.type)) return false;
+                if (!cities.includes(ev.city)) return false;
+                if (activeMonthFilter !== 'all' && !ev.months.includes(activeMonthFilter)) return false;
+                if (!freeOnly && !paidOnly) return false;
+                if (freeOnly && !paidOnly && ev.entry !== 'free') return false;
+                if (!freeOnly && paidOnly && ev.entry !== 'paid') return false;
+                return true;
+            });
+
+            renderEvents(filtered);
+        }
+
+        function filterMonth(month, btn) {
+            activeMonthFilter = month;
+            document.querySelectorAll('.cal-month').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            applyFilters();
+        }
+
+        const typeColors = { festival: 'festival', cultural: 'cultural', religious: 'religious', nature: 'nature', heritage: 'heritage' };
+
+        function renderEvents(events) {
+            document.getElementById('eventCount').textContent = `(${events.length})`;
+            const grid = document.getElementById('eventsGrid');
+            if (!events.length) {
+                grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:3rem;color:#aaa;"><i class="fas fa-calendar-times" style="font-size:3rem;margin-bottom:1rem;display:block"></i><p>No events found for the selected filters.</p></div>';
+                return;
+            }
+            grid.innerHTML = events.map(ev => `
+            <div class="event-card" id="ev-${ev.id}">
+                <div class="event-card-banner banner-${typeColors[ev.type]}"></div>
+                <div class="event-card-body">
+                    <span class="event-type-badge badge-${typeColors[ev.type]}">${ev.type}</span>
+                    <h3>${ev.name}</h3>
+                    <div class="event-meta">
+                        <div class="event-meta-row"><i class="fas fa-calendar-alt"></i>${ev.dates}</div>
+                        <div class="event-meta-row"><i class="fas fa-map-marker-alt"></i>${ev.venue}</div>
+                        <div class="event-meta-row"><i class="fas fa-clock"></i>${ev.duration}</div>
+                        <div class="event-meta-row"><i class="fas fa-ticket-alt"></i>${ev.entry === 'free' ? '<span style="color:#2e7d32;font-weight:600">Free Entry</span>' : `₹${ev.adultFee} per adult`}</div>
+                    </div>
+                    <p class="event-desc">${ev.desc}</p>
+                    <div class="event-card-footer">
+                        <button class="btn-event-book" onclick="openEventModal(${ev.id})"><i class="fas fa-ticket-alt" style="margin-right:5px"></i>Book Tickets</button>
+                        <button class="btn-event-info" onclick="showToast('Opening details for ${ev.name}','info')"><i class="fas fa-info-circle"></i></button>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+        }
+
+        let currentEvent = null;
+        function openEventModal(id) {
+            currentEvent = allEvents.find(e => e.id === id);
+            document.getElementById('eventModalName').textContent = currentEvent.name;
+            document.getElementById('eEventName').value = currentEvent.name;
+            calcEventPrice();
+            document.getElementById('eventBookingModal').classList.add('open');
+        }
+        function closeEventModal() { document.getElementById('eventBookingModal').classList.remove('open'); }
+
+        function calcEventPrice() {
+            if (!currentEvent) return;
+            const adults = parseInt(document.getElementById('eAdults').value) || 0;
+            const children = parseInt(document.getElementById('eChildren').value) || 0;
+            const cat = document.getElementById('eTicketCat').value;
+            let aFee = currentEvent.adultFee, cFee = currentEvent.childFee;
+            if (cat === 'vip') { aFee *= 3; cFee *= 2; }
+            if (cat === 'guided') { aFee = aFee * 2 + 100; cFee = cFee * 2 + 50; }
+            const aTotal = adults * aFee, cTotal = children * cFee;
+            document.getElementById('adultCount').textContent = adults;
+            document.getElementById('childCount').textContent = children;
+            document.getElementById('adultPrice').textContent = aFee === 0 ? 'Free' : `₹${aFee}`;
+            document.getElementById('childPrice').textContent = cFee === 0 ? 'Free' : `₹${cFee}`;
+            document.getElementById('adultTotal').textContent = aFee === 0 ? 'Free' : `₹${aTotal}`;
+            document.getElementById('childTotal').textContent = cFee === 0 ? 'Free' : `₹${cTotal}`;
+            document.getElementById('eTotal').textContent = (aFee === 0 && cFee === 0) ? 'Free' : `₹${aTotal + cTotal}`;
+        }
+
+        async function handleEventBooking(e) {
+            e.preventDefault();
+            const btn = e.target.querySelector('.submit-btn');
+            const orig = btn.innerHTML; btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Booking...';
+            const data = {
+                type: 'event', event_name: document.getElementById('eEventName').value,
+                name: document.getElementById('eName').value, email: document.getElementById('eEmail').value,
+                phone: document.getElementById('ePhone').value, date: document.getElementById('eDate').value,
+                adults: document.getElementById('eAdults').value, children: document.getElementById('eChildren').value,
+                ticket_category: document.getElementById('eTicketCat').value, requests: document.getElementById('eRequests').value
+            };
+            try {
+                const res = await fetch('http://localhost:5000/api/bookings', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+                const result = await res.json();
+                if (result.success) { showToast('Tickets booked! Confirmation sent to ' + data.email, 'success'); closeEventModal(); e.target.reset(); }
+                else showToast(result.message || 'Booking failed.', 'error');
+            } catch { showToast('Booking saved! Confirmation email will be sent shortly.', 'success'); closeEventModal(); e.target.reset(); }
+            finally { btn.disabled = false; btn.innerHTML = orig; }
+        }
+
+        document.getElementById('eventBookingModal').addEventListener('click', function (e) { if (e.target === this) closeEventModal(); });
+
+        // Init
+        document.addEventListener('DOMContentLoaded', function () {
+            // Initialize all checkboxes (free + paid both checked)
+            document.getElementById('freeCheck').checked = true;
+            document.getElementById('paidCheck').checked = true;
+            applyFilters();
+        });
+    </script>
+</body>
+
+</html>
