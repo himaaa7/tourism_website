@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Maps - Tricity Tourism Hub</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        .page-hero {
+            background: linear-gradient(135deg, rgba(26, 42, 108, 0.88) 0%, rgba(178, 31, 31, 0.8) 100%),
+                url('https://images.unsplash.com/photo-1548013146-72479768bada?w=1600') center/cover;
+            padding: 4rem 0 2.5rem;
+            text-align: center;
+            color: white;
+        }
+
+        .page-hero h1 {
+            font-size: 2.6rem;
+            font-weight: 700;
+            margin-bottom: 0.8rem;
+        }
+
+        .page-hero p {
+            font-size: 1.05rem;
+            opacity: 0.9;
+            max-width: 580px;
+            margin: 0 auto;
+        }
+
+        .map-layout {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            height: calc(100vh - 200px);
+            min-height: 550px;
+        }
+
+        @media(max-width:768px) {
+            .map-layout {
+                grid-template-columns: 1fr;
+                height: auto;
+            }
+
+            #mainMap {
+                height: 400px;
+            }
+        }
+
+        /* Sidebar */
+        .map-sidebar {
+            background: white;
+            border-right: 1px solid #e8eaff;
+            overflow-y: auto;
+            box-shadow: 4px 0 12px rgba(0, 0, 0, 0.06);
+            z-index: 10;
+        }
+
+        .sidebar-header {
+            padding: 1.2rem;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 5;
+        }
+
+        .sidebar-header h3 {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .sidebar-search {
+            display: flex;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .sidebar-search input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            padding: 0.5rem 0.8rem;
+            color: white;
+            font-size: 0.9rem;
+            outline: none;
+        }
+
+        .sidebar-search input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .sidebar-search button {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            padding: 0.5rem 0.8rem;
+            color: white;
+            cursor: pointer;
+        }
+
+        .filter-tabs {
+            display: flex;
+            gap: 0.4rem;
+            padding: 0.8rem;
+            flex-wrap: wrap;
+            border-bottom: 1px solid #eee;
+        }
+
+        .filter-tab {
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            border: 1.5px solid #e0e0e0;
+            background: white;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: #555;
+            transition: all 0.2s;
+        }
+
+        .filter-tab:hover,
+        .filter-tab.active {
+            background: #667eea;
+            border-color: #667eea;
+            color: white;
+        }
+
+        .place-list {
+            padding: 0.5rem;
+        }
+
+        .place-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.8rem;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.2s;
+            border: 1.5px solid transparent;
+            margin-bottom: 0.4rem;
+        }
+
+        .place-item:hover,
+        .place-item.active {
+            background: #f0f2ff;
+            border-color: #c5caff;
+        }
+
+        .place-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        .icon-temple {
+            background: #fff3e0;
+            color: #f57c00;
+        }
+
+        .icon-heritage {
+            background: #e8f5e9;
+            color: #388e3c;
+        }
+
+        .icon-nature {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+
+        .icon-beach {
+            background: #e0f2f1;
+            color: #00897b;
+        }
+
+        .place-item-info h4 {
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 2px;
+        }
+
+        .place-item-info p {
+            font-size: 0.78rem;
+            color: #777;
+        }
+
+        .place-item-info .city-badge {
+            font-size: 0.7rem;
+            color: #667eea;
+            font-weight: 500;
+        }
+
+        /* Map */
+        #mainMap {
+            flex: 1;
+            z-index: 1;
+        }
+
+        /* Map info panel */
+        .map-info-panel {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            background: white;
+            border-radius: 14px;
+            padding: 1.2rem 1.5rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            max-width: 280px;
+            z-index: 500;
+            display: none;
+        }
+
+        .map-info-panel.show {
+            display: block;
+            animation: fadeInUp 0.3s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .info-panel-close {
+            position: absolute;
+            top: 8px;
+            right: 10px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #aaa;
+            font-size: 1rem;
+        }
+
+        .info-panel-close:hover {
+            color: #e53935;
+        }
+
+        .info-panel-category {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #667eea;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .info-panel h3 {
+            font-size: 1rem;
+            color: #333;
+            margin-bottom: 4px;
+        }
+
+        .info-panel-location {
+            font-size: 0.82rem;
+            color: #777;
+            margin-bottom: 8px;
+        }
+
+        .info-panel-details {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 10px;
+        }
+
+        .info-panel-detail {
+            font-size: 0.8rem;
+            color: #555;
+        }
+
+        .info-panel-detail i {
+            color: #667eea;
+            margin-right: 4px;
+        }
+
+        .info-panel-btns {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-panel {
+            flex: 1;
+            padding: 0.5rem;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-size: 0.82rem;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .btn-panel-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-panel-primary:hover {
+            background: #5568e0;
+        }
+
+        .btn-panel-secondary {
+            background: #f0f2ff;
+            color: #667eea;
+        }
+
+        .btn-panel-secondary:hover {
+            background: #e0e4ff;
+        }
+
+        /* Custom markers */
+        .custom-marker {
+            width: 36px;
+            height: 36px;
+            border-radius: 50% 50% 50% 0;
+            transform: rotate(-45deg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+            border: 2px solid white;
+        }
+
+        .custom-marker i {
+            transform: rotate(45deg);
+            font-size: 0.9rem;
+            color: white;
+        }
+
+        .marker-temple {
+            background: #f57c00;
+        }
+
+        .marker-heritage {
+            background: #388e3c;
+        }
+
+        .marker-nature {
+            background: #1976d2;
+        }
+
+        .marker-beach {
+            background: #00897b;
+        }
+
+        /* Legend */
+        .map-legend {
+            position: absolute;
+            top: 80px;
+            right: 10px;
+            background: white;
+            border-radius: 10px;
+            padding: 0.8rem 1rem;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.12);
+            z-index: 500;
+            font-size: 0.82rem;
+        }
+
+        .legend-title {
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 0.5rem;
+            font-size: 0.85rem;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.3rem;
+            color: #555;
+        }
+
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .map-container {
+            position: relative;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <h1><i class="fas fa-map-marked-alt"></i> Tricity Tourism Hub</h1>
+                    <p class="tagline">Guntur • Vijayawada • Amaravathi</p>
+                </div>
+                <nav class="navbar">
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="virtual-tours.html">Virtual Tours</a></li>
+                        <li><a href="interactive-maps.html" class="active">Interactive Maps</a></li>
+                        <li><a href="events.html">Events</a></li>
+                        <li><a href="about.html">About</a></li>
+                    </ul>
+                </nav>
+                <div class="auth-buttons">
+                    <button class="btn-login" onclick="openModal('login')">Login</button>
+                    <button class="btn-signup" onclick="openModal('signup')">Sign Up</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="page-hero">
+        <div class="container">
+            <h1><i class="fas fa-map" style="margin-right:12px"></i>Interactive Map</h1>
+            <p>Discover all destinations on an interactive map. Click any marker to learn more and get directions.</p>
+        </div>
+    </section>
+
+    <div class="map-layout">
+        <!-- Sidebar -->
+        <div class="map-sidebar">
+            <div class="sidebar-header">
+                <h3><i class="fas fa-list" style="margin-right:6px"></i>All Destinations (9)</h3>
+                <div class="sidebar-search">
+                    <input type="text" id="sidebarSearch" placeholder="Search places...">
+                    <button onclick="filterPlaces()"><i class="fas fa-search"></i></button>
+                </div>
+            </div>
+            <div class="filter-tabs">
+                <button class="filter-tab active" onclick="filterByCategory('all', this)">All</button>
+                <button class="filter-tab" onclick="filterByCategory('temple', this)">🛕 Temples</button>
+                <button class="filter-tab" onclick="filterByCategory('heritage', this)">🏰 Heritage</button>
+                <button class="filter-tab" onclick="filterByCategory('nature', this)">🌿 Nature</button>
+                <button class="filter-tab" onclick="filterByCategory('beach', this)">🏖️ Beaches</button>
+            </div>
+            <div class="place-list" id="placeList"></div>
+        </div>
+
+        <!-- Map -->
+        <div class="map-container" style="position:relative; flex:1;">
+            <div id="mainMap" style="width:100%; height:100%; min-height:550px;"></div>
+
+            <!-- Legend -->
+            <div class="map-legend">
+                <div class="legend-title">Legend</div>
+                <div class="legend-item">
+                    <div class="legend-dot" style="background:#f57c00"></div> Temples
+                </div>
+                <div class="legend-item">
+                    <div class="legend-dot" style="background:#388e3c"></div> Heritage
+                </div>
+                <div class="legend-item">
+                    <div class="legend-dot" style="background:#1976d2"></div> Nature
+                </div>
+                <div class="legend-item">
+                    <div class="legend-dot" style="background:#00897b"></div> Beaches
+                </div>
+            </div>
+
+            <!-- Info Panel -->
+            <div class="map-info-panel" id="infoPanel">
+                <button class="info-panel-close" onclick="closeInfoPanel()"><i class="fas fa-times"></i></button>
+                <div class="info-panel-category" id="panelCategory"></div>
+                <h3 id="panelName"></h3>
+                <div class="info-panel-location" id="panelLocation"></div>
+                <div class="info-panel-details">
+                    <div class="info-panel-detail"><i class="fas fa-ticket-alt"></i><span id="panelFee"></span></div>
+                    <div class="info-panel-detail"><i class="fas fa-calendar"></i><span id="panelSeason"></span></div>
+                </div>
+                <div class="info-panel-btns">
+                    <button class="btn-panel btn-panel-primary" id="panelExplore" onclick="">Explore</button>
+                    <button class="btn-panel btn-panel-secondary" id="panelDirections" onclick="">Directions</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Tricity Tourism Hub</h3>
+                    <p>Discover the best of Guntur, Vijayawada, and Amaravathi</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html#temples">Temples</a></li>
+                        <li><a href="index.html#heritage">Heritage</a></li>
+                        <li><a href="index.html#nature">Nature</a></li>
+                        <li><a href="index.html#beaches">Beaches</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact Us</h4>
+                    <p><i class="fas fa-envelope"></i> info@tricitytourism.com</p>
+                    <p><i class="fas fa-phone"></i> +91 1234567890</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Tricity Tourism Hub. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        const destinations = [
+            {
+                id: 1, name: 'Kanaka Durga Temple', category: 'temple',
+                city: 'Vijayawada', location: 'Indrakeeladri Hill, Vijayawada',
+                lat: 16.5062, lng: 80.6480,
+                fee: 'Free / ₹100 Special', season: 'Oct–Mar',
+                url: 'kanaka_durga_temple.html',
+                icon: '🛕'
+            },
+            {
+                id: 2, name: 'Lakshmi Narasimha Temple', category: 'temple',
+                city: 'Amaravathi', location: 'Amaravathi, Guntur',
+                lat: 16.5740, lng: 80.3564,
+                fee: 'Free', season: 'Oct–Feb',
+                url: 'narasimhatemple.html',
+                icon: '🛕'
+            },
+            {
+                id: 3, name: 'Undavalli Caves', category: 'heritage',
+                city: 'Vijayawada', location: 'Undavalli, near Vijayawada',
+                lat: 16.4892, lng: 80.5878,
+                fee: '₹25 / ₹300', season: 'Oct–Mar',
+                url: 'undavallicaves.html',
+                icon: '🏛️'
+            },
+            {
+                id: 4, name: 'Kondaveedu Fort', category: 'heritage',
+                city: 'Guntur', location: 'Kondaveedu, Guntur District',
+                lat: 16.2726, lng: 80.0720,
+                fee: '₹10', season: 'Oct–Feb',
+                url: 'kondaveedufort.html',
+                icon: '🏰'
+            },
+            {
+                id: 5, name: 'Kondapalli Fort', category: 'heritage',
+                city: 'Vijayawada', location: 'Kondapalli, near Vijayawada',
+                lat: 16.6152, lng: 80.5318,
+                fee: '₹15 / ₹200', season: 'Nov–Feb',
+                url: 'kondapallifort.html',
+                icon: '🏯'
+            },
+            {
+                id: 6, name: 'Butterfly Garden', category: 'nature',
+                city: 'Vijayawada', location: 'Rajiv Gandhi Park, Vijayawada',
+                lat: 16.5220, lng: 80.6340,
+                fee: '₹20 / ₹10', season: 'Oct–Mar',
+                url: 'butterflygarden.html',
+                icon: '🦋'
+            },
+            {
+                id: 7, name: 'Uppalapadu Bird Sanctuary', category: 'nature',
+                city: 'Guntur', location: 'Uppalapadu, Guntur',
+                lat: 16.2890, lng: 80.4380,
+                fee: 'Free', season: 'Oct–Mar',
+                url: 'uppalapadu.html',
+                icon: '🦢'
+            },
+            {
+                id: 8, name: 'Suryalanka Beach', category: 'beach',
+                city: 'Bapatla', location: 'Suryalanka, Bapatla',
+                lat: 15.9050, lng: 80.4640,
+                fee: 'Free', season: 'Nov–Feb',
+                url: 'suryalankabeach.html',
+                icon: '🏖️'
+            },
+            {
+                id: 9, name: 'Manginapudi Beach', category: 'beach',
+                city: 'Guntur', location: 'Manginapudi, Machilipatnam',
+                lat: 16.1750, lng: 81.1380,
+                fee: 'Free', season: 'Oct–Jan',
+                url: 'manginapudibeach.html',
+                icon: '🌊'
+            }
+        ];
+
+        const markerColors = { temple: '#f57c00', heritage: '#388e3c', nature: '#1976d2', beach: '#00897b' };
+        const iconClasses = { temple: 'fas fa-place-of-worship', heritage: 'fas fa-landmark', nature: 'fas fa-leaf', beach: 'fas fa-umbrella-beach' };
+
+        let map, markers = {}, activeFilter = 'all', leafletMarkers = [];
+
+        function initMap() {
+            map = L.map('mainMap').setView([16.30, 80.45], 9);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors',
+                maxZoom: 18
+            }).addTo(map);
+            destinations.forEach(addMarker);
+            renderSidebar(destinations);
+        }
+
+        function addMarker(dest) {
+            const color = markerColors[dest.category];
+            const icon = L.divIcon({
+                className: '',
+                html: `<div style="width:38px;height:38px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);background:${color};display:flex;align-items:center;justify-content:center;box-shadow:0 3px 10px rgba(0,0,0,0.3);border:2px solid white;">
+                       <i class="${iconClasses[dest.category]}" style="transform:rotate(45deg);font-size:0.85rem;color:white;"></i>
+                   </div>`,
+                iconSize: [38, 38], iconAnchor: [19, 38], popupAnchor: [0, -38]
+            });
+            const m = L.marker([dest.lat, dest.lng], { icon }).addTo(map);
+            m.bindTooltip(dest.name, { direction: 'top', offset: [0, -40], className: 'leaflet-tooltip' });
+            m.on('click', () => showInfoPanel(dest));
+            markers[dest.id] = m;
+            leafletMarkers.push({ dest, marker: m });
+        }
+
+        function showInfoPanel(dest) {
+            document.getElementById('panelCategory').textContent = dest.category.charAt(0).toUpperCase() + dest.category.slice(1);
+            document.getElementById('panelName').textContent = dest.name;
+            document.getElementById('panelLocation').innerHTML = `<i class="fas fa-map-marker-alt" style="color:#667eea;margin-right:4px"></i>${dest.location}`;
+            document.getElementById('panelFee').textContent = dest.fee;
+            document.getElementById('panelSeason').textContent = dest.season;
+            document.getElementById('panelExplore').onclick = () => window.location.href = dest.url;
+            document.getElementById('panelDirections').onclick = () => window.open(`https://maps.google.com/maps?q=${dest.lat},${dest.lng}`, '_blank');
+            document.getElementById('infoPanel').classList.add('show');
+            // Highlight sidebar
+            document.querySelectorAll('.place-item').forEach(el => el.classList.remove('active'));
+            const sidebarItem = document.querySelector(`[data-id="${dest.id}"]`);
+            if (sidebarItem) { sidebarItem.classList.add('active'); sidebarItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }
+            map.setView([dest.lat, dest.lng], 13, { animate: true });
+        }
+
+        function closeInfoPanel() {
+            document.getElementById('infoPanel').classList.remove('show');
+        }
+
+        function renderSidebar(list) {
+            const container = document.getElementById('placeList');
+            container.innerHTML = list.map(dest => `
+            <div class="place-item" data-id="${dest.id}" onclick="showInfoPanel(${JSON.stringify(dest).replace(/"/g, '&quot;')})">
+                <div class="place-icon icon-${dest.category}">
+                    <i class="${iconClasses[dest.category]}"></i>
+                </div>
+                <div class="place-item-info">
+                    <h4>${dest.name}</h4>
+                    <p>${dest.location}</p>
+                    <span class="city-badge"><i class="fas fa-map-pin" style="margin-right:3px"></i>${dest.city}</span>
+                </div>
+            </div>
+        `).join('');
+        }
+
+        function filterByCategory(cat, btn) {
+            activeFilter = cat;
+            document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+            btn.classList.add('active');
+            const filtered = cat === 'all' ? destinations : destinations.filter(d => d.category === cat);
+            // Show/hide markers
+            leafletMarkers.forEach(({ dest, marker }) => {
+                if (cat === 'all' || dest.category === cat) {
+                    if (!map.hasLayer(marker)) map.addLayer(marker);
+                } else {
+                    if (map.hasLayer(marker)) map.removeLayer(marker);
+                }
+            });
+            renderSidebar(filtered);
+            closeInfoPanel();
+        }
+
+        function filterPlaces() {
+            const q = document.getElementById('sidebarSearch').value.toLowerCase();
+            const filtered = destinations.filter(d =>
+                (activeFilter === 'all' || d.category === activeFilter) &&
+                (d.name.toLowerCase().includes(q) || d.location.toLowerCase().includes(q) || d.city.toLowerCase().includes(q))
+            );
+            renderSidebar(filtered);
+        }
+
+        document.getElementById('sidebarSearch').addEventListener('input', filterPlaces);
+        document.addEventListener('DOMContentLoaded', initMap);
+    </script>
+</body>
+
+</html>
