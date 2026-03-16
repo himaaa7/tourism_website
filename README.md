@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 🌏 Tricity Tourism Hub — Complete Project
 
 A full-stack tourism website for Guntur, Vijayawada & Amaravathi, Andhra Pradesh.
@@ -149,3 +150,6 @@ In `virtual-tours.html`, find `div#video-1` through `div#video-4` and replace th
 - **Frontend**: HTML5, CSS3, Vanilla JS, Leaflet.js (maps), Font Awesome
 - **Backend**: Node.js, Express, SQLite3, JWT, bcryptjs
 - **Maps**: OpenStreetMap via Leaflet.js (free, no API key needed)
+=======
+# tourism_website
+>>>>>>> 8ae233011f778b83b7263be150a475b91d80612e
