@@ -9,19 +9,21 @@ const rateLimit = require('express-rate-limit');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// ── CORS: allows frontend on any local port ──────────────────────────
-app.use(cors({
-    origin: function (origin, cb) {
-        // allow no-origin (Postman, curl) and any localhost / 127.0.0.1
-        if (!origin || origin.includes('localhost') || origin.includes('127.0.0.1') || origin === 'null') {
-            return cb(null, true);
-        }
-        cb(new Error('CORS blocked: ' + origin));
-    },
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-    credentials: true
-}));
+// // ── CORS: allows frontend on any local port ──────────────────────────
+// app.use(cors({
+//     origin: function (origin, cb) {
+//         // allow no-origin (Postman, curl) and any localhost / 127.0.0.1
+//         if (!origin || origin.includes('localhost') || origin.includes('127.0.0.1') || origin === 'null') {
+//             return cb(null, true);
+//         }
+//         cb(new Error('CORS blocked: ' + origin));
+//     },
+//     methods: ['GET', 'POST', 'PUT', 'DELETE'],
+//     allowedHeaders: ['Content-Type', 'Authorization'],
+//     credentials: true
+// }));
+
+app.use(cors());
 
 app.use(express.json({ limit: '10kb' }));
 app.use(express.urlencoded({ extended: true }));
